@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extreme Studio</title>
+<style>
+
+  * { box-sizing: border-box; }
+  body { font-family: sans-serif; margin: 0; padding: 0; }
+  nav { display: flex; gap: 8px; padding: 12px; background: #222; }
+  nav button { flex: 1; padding: 10px; border: none; border-radius: 6px; background: #444; color: #fff; }
+  nav button:active { background: #666; }
+
+  .hidden { display: none !important; }
+
+  #gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+  @media (orientation: landscape) {
+    #gallery-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .photo-card {
+    border: none; padding: 0; background: none; text-align: left; cursor: pointer;
+  }
+  .photo-card__img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; display: block; }
+  .photo-card__meta { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 2px; }
+
+  #detail-view { padding: 12px; }
+  .detail__img { width: 100%; border-radius: 8px; touch-action: pan-y; }
+  .detail__tags { margin-top: 8px; }
+  .tag { display: inline-block; background: #eee; border-radius: 12px; padding: 2px 8px; margin: 2px; font-size: 12px; }
+  #detail-close-btn { margin-bottom: 8px; padding: 8px 16px; }
+
+  #booking-form { display: flex; flex-direction: column; gap: 8px; padding: 12px; max-width: 400px; }
+  #booking-form input, #booking-form select, #booking-form textarea { padding: 8px; font-size: 16px; }
+  .booking-feedback--success { color: green; padding: 0 12px; }
+  .booking-feedback--error { color: crimson; padding: 0 12px; }
+  .loading-state, .error-state, .empty-state { padding: 20px; text-align: center; color: #666; }
+</style>
+</head>
+<body>
+
+  <nav>
+    <button type="button" data-category="portrait">Portrait</button>
+    <button type="button" data-category="wedding">Wedding</button>
+    <button type="button" data-category="commercial">Commercial</button>
+  </nav>
+
+  <section id="gallery-view">
+    <div id="gallery-grid"></div>
+  </section>
+
+  <section id="detail-view" class="hidden">
+    <button type="button" id="detail-close-btn">← Back</button>
+    <div id="detail-content"></div>
+    <p style="text-align:center; color:#999; font-size:12px;">
+   
+    </p>
+  </section>
+
+  <hr>
+
+  <h2 style="padding: 0 12px;">Book a Session</h2>
+  <form id="booking-form">
+    <input name="name" placeholder="Full name" required>
+    <input name="email" type="email" placeholder="Email" required>
+    <select name="sessionType" required>
+      <option value="">Select session type</option>
+      <option value="portrait">Portrait</option>
+      <option value="wedding">Wedding</option>
+      <option value="commercial">Commercial</option>
+    </select>
+    <input name="date" type="date" required>
+    <textarea name="notes" placeholder="Notes (optional)"></textarea>
+    <button type="submit">Book Session</button>
+  </form>
+  <div id="booking-feedback"></div>
+  <div id="booking-list" style="padding: 12px;"></div>
+
+  
+  <script src="config.js"></script>
+  <script src="api.js"></script>
+  <script src="render.js"></script>
+  <script src="gestures.js"></script>
+  <script src="booking.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
