@@ -3,46 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Title</title>
-
-    <style>
-    h1{
-        color: #232C21;
-        font-style: italic;
-
-    }
-
-    body{
-        background-color: 	#F7F5F0;
-    }
-
-    footer{
-        border-bottom: 5px solid white;
-        border-style: solid;
-        border-radius: 0%;
-        background-color: white;
-        padding: 4%;
-        position: absolute;
-        bottom: 0%;
-        width: 150%;
-    }
-
-</style>
+    <title>Lenscraft</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-    <body>
+<body>
 
+    <header class="main-header">
         <h1>Lenscraft</h1>
+        
 
-        <input type="text" placeholder="Type or search anything" style="width: 100%;">
+        <button class="menu-toggle" aria-label="Toggle Navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </header>
+
+
+    <nav class="mobile-nav">
+        <a href="Home.html">Home</a>
+        <a href="Portfolio.html">Portfolio</a>
+        <a href="booking.html">Booking</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+
+    <main class="content-area">
+        <input type="text" placeholder="Type or search anything">
+
+    </main>
+
 
     <footer>
         <nav class="Nav-Bar">
-            <nav class="Home"><img src="./Images/home.svg" width="24" height="24"><P1>Home</P1></nav>
-            <nav class="Portfolio"><img src="./Images/portfolio.svg" width="24" height="24"><p1>Portfolio</p1></nav>
-            <nav class="Booking"><img src="./Images/book.svg" width="24" height="24"><p1>Booking</p1></nav>
-            <nav class="Contact"><img src="./Images/contact.svg" width="24" height="24"><p1>contact</p1></nav>
+            <a href="Home.html" class="Home">
+                <img src="./Images/home.svg" width="24" height="24" alt="Home">
+                <p>Home</p>
+            </a>
+            <a href="Portfolio.html" class="Portfolio">
+                <img src="./Images/portfolio.svg" width="24" height="24" alt="Portfolio">
+                <p>Portfolio</p>
+            </a>
+            <a href="booking.html" class="Booking">
+                <img src="./Images/book.svg" width="24" height="24" alt="Booking">
+                <p>Booking</p>
+            </a>
+            <a href="contact.html" class="Contact">
+                <img src="./Images/contact.svg" width="24" height="24" alt="Contact">
+                <p>Contact</p>
+            </a>
         </nav>
-        
     </footer>
-    </body>
+
+    <!-- JAVASCRIPT: Makes the hamburger button click open the slide-out menu -->
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileNav = document.querySelector('.mobile-nav');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+    </script>
+</body>
 </html>

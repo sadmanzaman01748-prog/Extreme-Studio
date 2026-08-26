@@ -1,0 +1,150 @@
+/* ==========================================================================
+   1. GLOBAL STYLES & LAYOUT RESET
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #F7F5F0;
+    font-family: sans-serif;
+    padding-bottom: 100px; 
+}
+
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #F7F5F0;
+}
+
+h1 {
+    color: #232C21;
+    font-style: italic;
+    font-size: 2rem;
+}
+
+
+.content-area {
+    padding: 0 20px;
+}
+
+.content-area input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================================================
+   2. ORIGINAL BOTTOM NAVIGATION BAR (Always Visible)
+   ========================================================================== */
+footer {
+    display: block;
+    border-top: 5px solid white; 
+    background-color: white;
+    padding: 15px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.Nav-Bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.Nav-Bar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #232C21; 
+}
+
+.Home, .Portfolio, .Booking, .Contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ==========================================================================
+   3. HAMBURGER TOGGLE BUTTON & DRAWER MENU (Always Accessible)
+   ========================================================================== */
+
+
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 200; 
+}
+
+.menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: #232C21; 
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+
+.menu-toggle.active .bar {
+    background-color: #ffffff; 
+}
+
+/* Morphs the bars into a close 'X' symbol */
+.menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+.menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    right: -100%; 
+    width: 250px;
+    height: 100vh;
+    background-color: #232C21;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    transition: right 0.3s ease;
+    z-index: 150;
+}
+
+
+.mobile-nav.active {
+    right: 0;
+}
+
+.mobile-nav a {
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+}
