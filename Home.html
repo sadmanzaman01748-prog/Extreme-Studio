@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lenscraft</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="./Images/home.svg">
+    <link rel="stylesheet" href="Style.css">
 </head>
 <body>
 
     <header class="main-header">
         <h1>Last - Click</h1>
-        
 
         <button class="menu-toggle" aria-label="Toggle Navigation">
             <span class="bar"></span>
@@ -19,7 +19,6 @@
         </button>
     </header>
 
-
     <nav class="mobile-nav">
         <a href="Home.html">Home</a>
         <a href="Portfolio.html">Portfolio</a>
@@ -27,12 +26,13 @@
         <a href="contact.html">Contact</a>
     </nav>
 
-
     <main class="content-area">
-        <input type="text" placeholder="Type or search anything">
-
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <div id="results"></div>
+        </div>
+        <div id="profile"></div>
     </main>
-
 
     <footer>
         <nav class="Nav-Bar">
@@ -55,6 +55,8 @@
         </nav>
     </footer>
 
+    <script src="./config.js"></script>
+    <script src="./api.js"></script>
 
     <script>
         const menuToggle = document.querySelector('.menu-toggle');
@@ -63,6 +65,110 @@
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             mobileNav.classList.toggle('active');
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const resultsBox = document.getElementById('results');
+        const profileBox = document.getElementById('profile');
+        let debounceTimer;
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(debounceTimer);
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                resultsBox.innerHTML = '';
+                return;
+            }
+
+            debounceTimer = setTimeout(() => {
+                fetchResults(query);
+            }, 300);
+        });
+
+        async function fetchResults(query) {
+            try {
+                console.log(query);
+                const designers = await LensCraftAPI.searchUsers(query);
+                renderResults(designers);
+            } catch (err) {
+                console.error('Search failed:', err);
+                resultsBox.innerHTML = '<p>Something went wrong. Try again.</p>';
+            }
+        }
+
+        function renderResults(designers) {
+            if (!designers || designers.length === 0) {
+                resultsBox.innerHTML = '<p>No matches found</p>';
+                return;
+            }
+
+            resultsBox.innerHTML = designers
+                .map(designer => `
+                    <button type="button" class="result-item" data-username="${escapeHtml(designer.username)}">
+                        ${designer.avatarUrl ? `<img src="${escapeHtml(designer.avatarUrl)}" width="40" height="40" alt="">` : ''}
+                        <span>${escapeHtml(designer.name)} <small>@${escapeHtml(designer.username)}</small></span>
+                    </button>
+                `)
+                .join('');
+        }
+
+        resultsBox.addEventListener('click', (e) => {
+            const item = e.target.closest('.result-item');
+            if (!item) return;
+            showProfile(item.dataset.username);
+        });
+
+        async function showProfile(username) {
+            profileBox.innerHTML = '<p>Loading profile…</p>';
+            resultsBox.innerHTML = '';
+            try {
+                const designer = await LensCraftAPI.getUserDetail(username);
+                renderProfile(designer);
+            } catch (err) {
+                console.error('Profile load failed:', err);
+                profileBox.innerHTML = '<p>Could not load this profile. Try again.</p>';
+            }
+        }
+
+        function renderProfile(designer) {
+            const stats = [
+                ['Photos', designer.totalPhotos],
+                ['Likes', designer.totalLikes],
+                ['Collections', designer.totalCollections]
+            ].map(([label, value]) => `<li><strong>${value}</strong> ${label}</li>`).join('');
+
+            profileBox.innerHTML = `
+                <article class="profile-card">
+                    <button type="button" class="profile-card__close" aria-label="Close profile">&times;</button>
+                    ${designer.avatarUrl ? `<img class="profile-card__avatar" src="${escapeHtml(designer.avatarUrl)}" width="80" height="80" alt="">` : ''}
+                    <h2 class="profile-card__name">${escapeHtml(designer.name)} <small>@${escapeHtml(designer.username)}</small></h2>
+                    ${designer.location ? `<p class="profile-card__location">📍 ${escapeHtml(designer.location)}</p>` : ''}
+                    ${designer.bio ? `<p class="profile-card__bio">${escapeHtml(designer.bio)}</p>` : ''}
+                    <ul class="profile-card__stats">${stats}</ul>
+                    <a class="profile-card__link" href="${escapeHtml(designer.profileUrl)}" target="_blank" rel="noopener noreferrer">View full profile on Unsplash</a>
+                </article>
+            `;
+
+            profileBox.querySelector('.profile-card__close').addEventListener('click', () => {
+                profileBox.innerHTML = '';
+            });
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>'"]/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[character]));
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-wrapper')) {
+                resultsBox.innerHTML = '';
+            }
         });
     </script>
 </body>

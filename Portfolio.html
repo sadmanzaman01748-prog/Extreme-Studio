@@ -3,32 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="./Images/portfolio.svg">
     <link rel="stylesheet" href="Style.css">
     <title>Portfolio</title>
-    
 </head>
 
 <body>
+
+    <header class="main-header">
         <h1>Last - Click</h1>
 
+        <button class="menu-toggle" aria-label="Toggle Navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </header>
 
- <footer>
-    <nav class="Nav-Bar">
+    <nav class="mobile-nav">
+        <a href="Home.html">Home</a>
+        <a href="Portfolio.html">Portfolio</a>
+        <a href="booking.html">Booking</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <main class="content-area">
+        <div class="portfolio-filters">
+            <button type="button" class="portfolio-filter is-active" data-category="portrait">Portrait</button>
+            <button type="button" class="portfolio-filter" data-category="wedding">Wedding</button>
+            <button type="button" class="portfolio-filter" data-category="commercial">Commercial</button>
+        </div>
+
+        <div id="portfolio-grid" class="portfolio-grid"></div>
+    </main>
+
+    <div id="artist-modal" class="artist-modal hidden">
+        <div class="artist-modal__backdrop"></div>
+        <div class="artist-modal__panel" role="dialog" aria-modal="true" aria-labelledby="artist-modal-name">
+            <button type="button" class="artist-modal__close" aria-label="Close">&times;</button>
+            <div id="artist-modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <nav class="Nav-Bar">
             <a href="Home.html" class="Home">
-                <nav class="Home"><img src="./Images/home.svg" width="24" height="24"><P1>Home</P1></nav>
+                <img src="./Images/home.svg" width="24" height="24" alt="Home">
+                <p>Home</p>
             </a>
             <a href="Portfolio.html" class="Portfolio">
-                <nav class="Portfolio"><img src="./Images/portfolio.svg" width="24" height="24"><p1>Portfolio</p1></nav>
+                <img src="./Images/portfolio.svg" width="24" height="24" alt="Portfolio">
+                <p>Portfolio</p>
             </a>
-            <a href="Booking.html" class="Booking">
-                <nav class="Booking"><img src="./Images/book.svg" width="24" height="24"><p1>Booking</p1></nav>
+            <a href="booking.html" class="Booking">
+                <img src="./Images/book.svg" width="24" height="24" alt="Booking">
+                <p>Booking</p>
             </a>
-            <a href="Contact.html" class="Contact">
-                <nav class="Contact"><img src="./Images/contact.svg" width="24" height="24"><p1>contact</p1></nav>
+            <a href="contact.html" class="Contact">
+                <img src="./Images/contact.svg" width="24" height="24" alt="Contact">
+                <p>Contact</p>
             </a>
         </nav>
-        
     </footer>
+
+    <script src="./config.js"></script>
+    <script src="./api.js"></script>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileNav = document.querySelector('.mobile-nav');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+
+        const grid = document.getElementById('portfolio-grid');
+        const filters = document.querySelectorAll('.portfolio-filter');
+        const modal = document.getElementById('artist-modal');
+        const modalBody = document.getElementById('artist-modal-body');
+
+        async function loadCategory(categoryKey) {
+            grid.innerHTML = '<p class="portfolio-status">Loading work…</p>';
+            try {
+                const photos = await LensCraftAPI.searchPhotos(categoryKey);
+                renderGrid(photos);
+            } catch (err) {
+                console.error('Portfolio load failed:', err);
+                grid.innerHTML = '<p class="portfolio-status">Could not load images. Try again.</p>';
+            }
+        }
+
+        function renderGrid(photos) {
+            if (!photos || photos.length === 0) {
+                grid.innerHTML = '<p class="portfolio-status">No work found here yet.</p>';
+                return;
+            }
+
+            grid.innerHTML = photos
+                .map(photo => `
+                    <button type="button" class="portfolio-item"
+                            data-username="${escapeHtml(photo.photographerUsername)}"
+                            data-name="${escapeHtml(photo.photographer)}">
+                        <img src="${escapeHtml(photo.thumbUrl)}" alt="${escapeHtml(photo.alt)}" loading="lazy">
+                    </button>
+                `)
+                .join('');
+        }
+
+        grid.addEventListener('click', (e) => {
+            const item = e.target.closest('.portfolio-item');
+            if (!item) return;
+            openArtist(item.dataset.username, item.dataset.name);
+        });
+
+        async function openArtist(username, fallbackName) {
+            openModal();
+            modalBody.innerHTML = '<p class="portfolio-status">Loading artist…</p>';
+
+            if (!username) {
+                modalBody.innerHTML = `
+                    <h2 id="artist-modal-name">${escapeHtml(fallbackName || 'Unknown artist')}</h2>
+                    <p>No further details are available for this artist.</p>
+                `;
+                return;
+            }
+
+            try {
+                const artist = await LensCraftAPI.getUserDetail(username);
+                renderArtist(artist);
+            } catch (err) {
+                console.error('Artist load failed:', err);
+                modalBody.innerHTML = `
+                    <h2 id="artist-modal-name">${escapeHtml(fallbackName || 'Unknown artist')}</h2>
+                    <p>Could not load this artist's profile.</p>
+                `;
+            }
+        }
+
+        function renderArtist(artist) {
+            modalBody.innerHTML = `
+                ${artist.avatarUrl ? `<img class="artist-modal__avatar" src="${escapeHtml(artist.avatarUrl)}" width="80" height="80" alt="">` : ''}
+                <h2 id="artist-modal-name">${escapeHtml(artist.name)} <small>@${escapeHtml(artist.username)}</small></h2>
+                ${artist.location ? `<p class="artist-modal__location">📍 ${escapeHtml(artist.location)}</p>` : ''}
+                <p class="artist-modal__bio">${artist.bio ? escapeHtml(artist.bio) : 'This artist has not written a bio yet.'}</p>
+                <a class="artist-modal__link" href="${escapeHtml(artist.profileUrl)}" target="_blank" rel="noopener noreferrer">View full profile on Unsplash</a>
+            `;
+        }
+
+        function openModal() {
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modalBody.innerHTML = '';
+        }
+
+        modal.querySelector('.artist-modal__close').addEventListener('click', closeModal);
+        modal.querySelector('.artist-modal__backdrop').addEventListener('click', closeModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        filters.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filters.forEach(b => b.classList.remove('is-active'));
+                btn.classList.add('is-active');
+                loadCategory(btn.dataset.category);
+            });
+        });
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>'"]/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[character]));
+        }
+
+        loadCategory('portrait');
+    </script>
 </body>
 
 </html>
