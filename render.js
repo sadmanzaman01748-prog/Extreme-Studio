@@ -1,13 +1,8 @@
 
 const LensCraftRender = (() => {
 
+
   
-  /**
-   *
-   * @param {HTMLElement} container
-   * @param {Array<Object>} photos 
-   * @param {(photoId: string) => void} onPhotoTap - 
-   */
   function renderGallery(container, photos, onPhotoTap) {
     container.innerHTML = "";
 
