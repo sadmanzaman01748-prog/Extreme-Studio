@@ -1,7 +1,8 @@
 
 const LensCraftRender = (() => {
-  /**
+
   
+  /**
    *
    * @param {HTMLElement} container
    * @param {Array<Object>} photos 
