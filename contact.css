@@ -228,3 +228,115 @@ header {
   color: var(--ink);
   font-weight: bold;
 }
+
+.main-header {
+  align-items: center;
+  background-color: var(--ivory);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.main-header h1 {
+  color: #232c21;
+  font-size: 2rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.menu-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 27px;
+  justify-content: center;
+  padding: 0;
+  width: 32px;
+  z-index: 200;
+}
+
+.menu-toggle .bar {
+  background-color: #232c21;
+  border-radius: 2px;
+  height: 3px;
+  transition: transform 160ms ease, opacity 160ms ease;
+  width: 100%;
+}
+
+.menu-toggle.active .bar:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active .bar:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.mobile-nav {
+  background-color: #232c21;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  position: fixed;
+  right: -100%;
+  top: 0;
+  transition: right 160ms ease;
+  width: 250px;
+  height: 100vh;
+  z-index: 150;
+}
+
+.mobile-nav.active {
+  right: 0;
+}
+
+.mobile-nav a {
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 15px 25px;
+  text-decoration: none;
+}
+
+/* Keep the footer identical to the home page on every screen. */
+footer {
+  display: block;
+  border-top: 5px solid white;
+  background-color: white;
+  padding: 15px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.Nav-Bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.Nav-Bar a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #232c21;
+  font-size: 1rem;
+}
+
+.Nav-Bar a p {
+  margin: 4px 0 0;
+}
+
+.Nav-Bar a.active {
+  font-weight: 700;
+}

@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact</title>
+  <title>Contact | Last - Click</title>
   <link rel="stylesheet" href="contact.css" />
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <h1>LAST CLICK</h1>
-      <p>STUDIO · BIRTAMOD</p>
-    </div>
-    <a href="booking.html" class="btn-outline">Book</a>
+  <header class="main-header">
+    <h1>Last - Click</h1>
+    <button class="menu-toggle" type="button" aria-label="Toggle Navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
   </header>
+
+  <nav class="mobile-nav" aria-label="Main navigation">
+    <a href="Home.html">Home</a>
+    <a href="Portfolio.html">Portfolio</a>
+    <a href="booking.html">Booking</a>
+    <a href="contact.html" aria-current="page">Contact</a>
+  </nav>
 
   <!-- Hero -->
   <section class="hero">
@@ -90,14 +97,37 @@
     </div>
   </section>
 
-  <!-- Bottom Nav -->
-  <nav class="bottom-nav">
-    <a href="index.html">🏠 <span>Home</span></a>
-    <a href="#">🖼 <span>Gallery</span></a>
-    <a href="booking.html">📅 <span>Book</span></a>
-    <a href="#">📖 <span>Journal</span></a>
-    <a href="contact.html" class="active">🏷 <span>Contact</span></a>
-  </nav>
+  <footer>
+    <nav class="Nav-Bar">
+      <a href="Home.html" class="Home">
+        <img src="./Images/home.svg" width="24" height="24" alt="Home">
+        <p>Home</p>
+      </a>
+      <a href="Portfolio.html" class="Portfolio">
+        <img src="./Images/portfolio.svg" width="24" height="24" alt="Portfolio">
+        <p>Portfolio</p>
+      </a>
+      <a href="booking.html" class="Booking">
+        <img src="./Images/book.svg" width="24" height="24" alt="Booking">
+        <p>Booking</p>
+      </a>
+      <a href="contact.html" class="Contact active" aria-current="page">
+        <img src="./Images/contact.svg" width="24" height="24" alt="Contact">
+        <p>Contact</p>
+      </a>
+    </nav>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileNav = document.querySelector('.mobile-nav');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menuToggle.classList.toggle('active');
+      mobileNav.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  </script>
 
 </body>
 </html>

@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book a Session</title>
+  <title>Booking | Last - Click</title>
   <link rel="stylesheet" href="booking.css" />
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <h1>LAST CLICK</h1>
-      <p>STUDIO · BIRTAMOD</p>
-    </div>
-    <a href="contact.html" class="btn-outline">Contact</a>
+  <header class="main-header">
+    <h1>Last - Click</h1>
+    <button class="menu-toggle" type="button" aria-label="Toggle Navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
   </header>
+
+  <nav class="mobile-nav" aria-label="Main navigation">
+    <a href="Home.html">Home</a>
+    <a href="Portfolio.html">Portfolio</a>
+    <a href="booking.html" aria-current="page">Booking</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
   <!-- Hero -->
   <section class="hero">
@@ -73,21 +82,24 @@
     <p class="label">SERVICES</p>
     <div class="services-row">
 
-      <div class="service-card" style="background-image: url('https://images.unsplash.com/photo-1766763845239-0194f176b0a8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG5lcGFsaSUyMHdlZWRpbmd8ZW58MHx8MHx8fDA%3D')">
+      <div class="service-card"
+        style="background-image: url('https://images.unsplash.com/photo-1766763845239-0194f176b0a8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG5lcGFsaSUyMHdlZWRpbmd8ZW58MHx8MHx8fDA%3D')">
         <div class="service-info">
           <p class="service-name">Wedding</p>
           <p class="service-sub">For couples</p>
         </div>
       </div>
 
-      <div class="service-card" style="background-image: url('https://images.unsplash.com/photo-1777993325982-d0e9e0f61cfb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNHx8fGVufDB8fHx8fA%3D%3D')">
+      <div class="service-card"
+        style="background-image: url('https://images.unsplash.com/photo-1777993325982-d0e9e0f61cfb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNHx8fGVufDB8fHx8fA%3D%3D')">
         <div class="service-info">
           <p class="service-name">Portrait</p>
           <p class="service-sub">For families</p>
         </div>
       </div>
 
-      <div class="service-card" style="background-image: url('https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNvbW1lcmNpYWx8ZW58MHx8MHx8fDA%3D')">
+      <div class="service-card"
+        style="background-image: url('https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNvbW1lcmNpYWx8ZW58MHx8MHx8fDA%3D')">
         <div class="service-info">
           <p class="service-name">Commercial</p>
           <p class="service-sub">For brands</p>
@@ -97,14 +109,38 @@
     </div>
   </section>
 
-  <!-- Bottom Nav -->
-  <nav class="bottom-nav">
-    <a href="index.html">🏠 <span>Home</span></a>
-    <a href="#">🖼 <span>Gallery</span></a>
-    <a href="booking.html" class="active">📅 <span>Book</span></a>
-    <a href="#">📖 <span>Journal</span></a>
-    <a href="contact.html">🏷 <span>Contact</span></a>
-  </nav>
+  <footer>
+    <nav class="Nav-Bar">
+      <a href="Home.html" class="Home">
+        <img src="./Images/home.svg" width="24" height="24" alt="Home">
+        <p>Home</p>
+      </a>
+      <a href="Portfolio.html" class="Portfolio">
+        <img src="./Images/portfolio.svg" width="24" height="24" alt="Portfolio">
+        <p>Portfolio</p>
+      </a>
+      <a href="booking.html" class="Booking active" aria-current="page">
+        <img src="./Images/book.svg" width="24" height="24" alt="Booking">
+        <p>Booking</p>
+      </a>
+      <a href="contact.html" class="Contact">
+        <img src="./Images/contact.svg" width="24" height="24" alt="Contact">
+        <p>Contact</p>
+      </a>
+    </nav>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileNav = document.querySelector('.mobile-nav');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menuToggle.classList.toggle('active');
+      mobileNav.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  </script>
 
 </body>
+
 </html>
